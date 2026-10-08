@@ -1,4 +1,4 @@
-# CV-Project: YOLO with Kolmogorov-Arnold Networks (KAN) & Vision-Language Foundation Models (VLM)
+# YOLO with Kolmogorov-Arnold Networks (KAN) & Vision-Language Foundation Models (VLM)
 ### Implementation of arXiv:2603.23037 (*Scientific Reports*, 2026)
 **Authors:** Marios Impraimakis, Daniel Vazquez, Feiyu Zhou
 
@@ -37,15 +37,10 @@ For every candidate detection output by YOLOv10, the pipeline extracts exactly s
 
 ## 🚀 3. Quick Start & Execution
 
-### Prerequisites & Installation
-```bash
-pip install -r requirements.txt
-```
-
 ### A. Run Trustworthy Inference & Audit
 Run perception on any test image to generate detection bounding boxes, trust audit scores, and the 7-spline explanation plot:
 ```bash
-python infer_trustworthy.py --image <path_to_image>
+python infer_trustworthy.py --image dataset/train/trainImages/000000119233.jpg
 ```
 *(Tip: Add `--no_blip` for ultra-fast offline execution without the BLIP captioning model).*
 
@@ -62,7 +57,7 @@ python infer_trustworthy.py --image <path_to_image>
 ---
 
 ### B. Train / Fine-Tune the KAN Surrogate
-To train the KAN surrogate model on your dataset:
+To re-train the KAN surrogate model on your COCO dataset:
 ```bash
 python train_surrogate.py --max_images 200 --epochs 30
 ```
@@ -76,7 +71,7 @@ python train_surrogate.py --max_images 200 --epochs 30
 ## 🏗️ 4. Repository Structure
 
 ```
-.
+yolov10_wan_vln/
 ├── models/
 │   ├── kan_surrogate.py      # 7-feature KAN surrogate model & symbolic fitting
 │   ├── yolo_detector.py      # YOLOv10 detection wrapper with 7-feature extraction
@@ -96,8 +91,5 @@ python train_surrogate.py --max_images 200 --epochs 30
 ├── infer_trustworthy.py      # Complete end-to-end inference and audit pipeline
 ├── train_surrogate.py        # Post-hoc KAN surrogate training script
 ├── train.py                  # End-to-end model training script
-├── infer.py                  # Basic inference script
-├── test_image.py             # Quick test script
-├── requirements.txt          # Python dependencies
-└── README.md                 # Project documentation
+└── requirements.txt          # Python dependencies
 ```

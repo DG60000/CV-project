@@ -1,0 +1,22 @@
+# Deep Learning Framework
+torch>=2.1.0
+torchvision>=0.16.0
+
+# Vision-Language Models (CLIP)
+transformers>=4.38.0
+huggingface_hub
+
+# Computer Vision & Image Processing
+opencv-python>=4.8.0
+pillow>=10.0.0
+
+# Scientific Computing & Interpretability
+numpy>=1.24.0
+matplotlib>=3.8.0
+sympy>=1.12
+
+# Configuration & Utilities
+pyyaml>=6.0.1
+
+# (Optional) Pre-trained YOLOv10 Backbone
+ultralytics>=8.1.0

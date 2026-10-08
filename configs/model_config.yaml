@@ -1,0 +1,60 @@
+# ==============================================================================
+# YOLOv10-KAN-VLM Configuration File
+# Research Paper: Impraimakis et al., arXiv:2603.23037
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Base YOLOv10 Detector
+# ------------------------------------------------------------------------------
+detector:
+  model_name: "yolov10n.pt"   # Pre-trained YOLOv10 (yolov10n.pt / yolov10s.pt / yolov10m.pt)
+  img_size: 640
+  conf_threshold: 0.25
+  iou_threshold: 0.45
+  device: "cpu"               # "cuda:0" or "cpu"
+
+# ------------------------------------------------------------------------------
+# 2. Kolmogorov-Arnold Network (KAN) Post-Hoc Surrogate Model
+# ------------------------------------------------------------------------------
+kan_surrogate:
+  in_features: 7              # [x, y, w, h, conf, class_id, scale]
+  hidden_dim: 16              # Hidden representation dimension
+  grid_size: 10               # Number of Radial Basis Function (RBF) spline knots
+  grid_min: 0.0               # Input normalized lower bound
+  grid_max: 1.0               # Input normalized upper bound
+  l1_sparsity_weight: 0.0001  # Sparsity penalty for clean univariate spline pruning
+  trust_threshold: 0.50       # Cutoff to flag low-trust / occluded predictions
+  checkpoint_path: "./checkpoints/kan_surrogate.pth"
+  feature_names:
+    - "x_center"
+    - "y_center"
+    - "box_width"
+    - "box_height"
+    - "yolo_confidence"
+    - "class_index"
+    - "relative_scale"
+
+# ------------------------------------------------------------------------------
+# 3. Vision-Language Foundation Model (BLIP)
+# ------------------------------------------------------------------------------
+vlm:
+  model_name: "Salesforce/blip-image-captioning-base"
+  max_new_tokens: 50
+
+# ------------------------------------------------------------------------------
+# 4. Dataset Configuration
+# ------------------------------------------------------------------------------
+dataset:
+  train_images: "dataset/train/trainImages"
+  train_annotations: "dataset/train/annotations/instances_train2017.json"
+  test_images: "dataset/test/testImages"
+  test_annotations: "dataset/test/annotations/instances_val2017.json"
+  cached_features: "checkpoints/features_7.npz"
+
+# ------------------------------------------------------------------------------
+# 5. Interpretability & Symbolic Fitting
+# ------------------------------------------------------------------------------
+interpretability:
+  polynomial_degree: 3        # Degree for SymPy symbolic polynomial curve fitting
+  output_plot_path: "./kan_7features_interpretability.png"
+  annotated_output_path: "./trustworthy_perception.jpg"
